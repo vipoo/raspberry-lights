@@ -1,0 +1,15 @@
+{
+  "name": "rasberry-lights",
+  "version": "1.0.0",
+  "description": "Controller for led strip based on hue lights status",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "huejay": "^1.8.4",
+    "lirc_node": "0.0.4"
+  }
+}
