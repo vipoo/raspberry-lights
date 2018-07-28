@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "huejay": "^1.8.4",
+    "lirc-client": "^2.0.0",
     "lirc_node": "0.0.4"
   }
 }

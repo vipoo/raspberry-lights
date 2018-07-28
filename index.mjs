@@ -1,4 +1,7 @@
 import huejay from 'huejay'
+import lircClient from 'lirc-client'
+
+const lirc = lircClient({host: '127.0.0.1', port: 8765})
 
 const username = 'p9LwtALNFiSIXdfdfdoC4LEnwEZ4xTezw7TEVs30'
 const host = '192.168.86.29'
@@ -12,6 +15,7 @@ async function findBridge() {
 
   return bridges[0]
 }
+
 
 /*async function registerRaspberryLights() {
   const bridge = await findBridge()
@@ -51,6 +55,9 @@ async function testMyLightStatus() {
   return myLight.on
 }
 
+
+//irsend SEND_ONCE ledstrip KEY_LIGHTS_TOGGLE
+
 async function monitorMyLightStatus(cb) {
   let wasOn = null
   while(true) {
@@ -62,5 +69,13 @@ async function monitorMyLightStatus(cb) {
   }
 }
 
-monitorMyLightStatus(isOn => console.log(`On: ${isOn}`))
+lirc.on('connect', () => {
+  console.log('Connected to lirc')
+  monitorMyLightStatus(isOn => {
+    console.log(`On: ${isOn}`)
 
+    lirc.sendOnce('ledstrip', 'KEY_LIGHTS_TOGGLE').catch(error => {
+        if (error) console.log(error);
+    })
+  })
+})
