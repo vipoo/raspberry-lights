@@ -2,9 +2,12 @@
   "name": "rasberry-lights",
   "version": "1.0.0",
   "description": "Controller for led strip based on hue lights status",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "node --experimental-modules index.mjs",
+    "deploy:init": "ssh pi@192.168.86.59 'mkdir -p ~/raspberry-lights-service'",
+    "deploy": "scp -r index.mjs package.json node_modules pi@192.168.86.59:raspberry-lights-service/"
   },
   "author": "",
   "license": "ISC",
