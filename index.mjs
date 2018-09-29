@@ -1,5 +1,6 @@
 import huejay from 'huejay'
 import lircClient from 'lirc-client'
+import {on, off} from './spike'
 
 const lirc = lircClient({host: '127.0.0.1', port: 8765})
 
@@ -73,6 +74,11 @@ lirc.on('connect', () => {
   console.log('Connected to lirc')
   monitorMyLightStatus(isOn => {
     console.log(`On: ${isOn}`)
+
+    if(isOn)
+      on()
+    else
+      off()
 
     lirc.sendOnce('ledstrip', 'KEY_LIGHTS_TOGGLE').catch(error => {
         if (error) console.log(error);

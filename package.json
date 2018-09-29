@@ -8,13 +8,16 @@
     "start": "node --experimental-modules index.mjs",
     "sync": "./scripts/sync.sh",
     "deploy:init": "ssh pi@192.168.86.59 'mkdir -p ~/raspberry-lights-service'",
-    "deploy": "scp -r index.mjs package.json node_modules pi@192.168.86.59:raspberry-lights-service/"
+    "deploy:upload": "scp -r index.mjs package.json pi@192.168.86.59:raspberry-lights-service/",
+    "deploy:install": "ssh pi@192.168.86.59 'cd ~/raspberry-lights-service && npm install --production'",
+    "deploy": "npm run deploy:upload && npm run deploy:install"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "huejay": "^1.8.4",
     "lirc-client": "^2.0.0",
-    "lirc_node": "0.0.4"
+    "lirc_node": "0.0.4",
+    "rpi-ws281x-native": "github:vipoo/node-rpi-ws281x-native#v1.x"
   }
 }
