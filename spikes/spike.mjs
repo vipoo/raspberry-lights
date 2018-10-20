@@ -1,11 +1,11 @@
 import Ws2812 from './ws2812'
 
-const count = 160
+const count = 160-11
 const w = new Ws2812(count)
 
-export function on() {
+export function on(x) {
   for (let i = 0; i < count; i++) {
-    w.array[i] = rgb(255, 0, 255)
+    w.array[i] = rgb(x, x, x)
   }
 
   w.render()
@@ -19,6 +19,9 @@ export function off() {
   w.render()
 }
 
+let b = 1
+setInterval(() => on(b++), 250)
+//on()
 
 /*let d = 255
 let interv = setInterval(() => {
