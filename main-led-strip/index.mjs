@@ -1,6 +1,6 @@
 import Ws2812 from './ws2812'
 
-const count = 160-11
+const count = 35 //160-11
 let strip = null 
 
 function on(x) {
@@ -25,7 +25,7 @@ export function connect() {
 
 export function toggleLight(isOn) {
   if(isOn)
-  	on(64)
+  	on(250)
   else
   	off()
 }

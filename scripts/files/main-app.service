@@ -1,0 +1,11 @@
+[Unit]
+Description=Main Node Service
+After=network.target
+
+[Service]
+WorkingDirectory=/home/pi/main-app-service
+ExecStart=/usr/local/bin/npm start
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

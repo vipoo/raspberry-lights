@@ -1,18 +1,22 @@
 {
   "name": "rasberry-lights",
   "version": "1.0.0",
-  "description": "Controller for led strip based on hue lights status",
+  "description": "Controller for my led strips",
   "main": "index.mjs",
   "scripts": {
     "test": "test",
     "start": "node --experimental-modules index.mjs",
-    "sync": "./scripts/sync.sh",
-    "deploy:init": "ssh pi@192.168.86.59 'mkdir -p ~/raspberry-lights-service'",
-    "deploy:upload": "scp -r index.mjs package.json pi@192.168.86.59:raspberry-lights-service/",
-    "deploy:install": "ssh pi@192.168.86.59 'cd ~/raspberry-lights-service && npm install --production'",
-    "deploy": "npm run deploy:upload && npm run deploy:install"
+    "pi:init": "PI_HOST=$npm_package_config_PI_HOST ./scripts/remote-install-lirc.sh",
+    "pi:upload": "PI_HOST=$npm_package_config_PI_HOST ./scripts/upload.sh main-app-service",
+    "pi:upload:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/upload.sh work",
+    "pi:install": "PI_HOST=$npm_package_config_PI_HOST ./scripts/install.sh main-app-service",
+    "pi:install:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/install.sh work",
+    "pi:sync:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/sync.sh"
   },
-  "author": "",
+  "config": {
+    "PI_HOST": "192.168.86.59"
+  },
+  "author": "Dean Netherton",
   "license": "ISC",
   "dependencies": {
     "huejay": "^1.8.4",
