@@ -11,7 +11,8 @@
     "pi:upload:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/upload.sh work",
     "pi:install": "PI_HOST=$npm_package_config_PI_HOST ./scripts/install.sh main-app-service",
     "pi:install:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/install.sh work",
-    "pi:sync:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/sync.sh"
+    "pi:sync:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/sync.sh",
+    "pi:ssh": "ssh pi@$npm_package_config_PI_HOST"
   },
   "config": {
     "PI_HOST": "192.168.86.59"
