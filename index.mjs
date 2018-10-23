@@ -10,10 +10,15 @@ async function getLightToggleStatus(cb) {
   let wasOn = false
 
   while(true) {
-    const isOn = await hue.getLightStatus('deans light')
-    if(isOn !== wasOn)
-      await cb(isOn)
-    wasOn = isOn
+    try {
+      const isOn = await hue.getLightStatus('deans light')
+      if(isOn !== wasOn)
+        await cb(isOn)
+      wasOn = isOn
+    } catch(err) {
+      console.error(err.message)
+      await delay(2000)
+    }
     await delay(20)
   }
 }
