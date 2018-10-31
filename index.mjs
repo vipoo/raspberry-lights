@@ -29,7 +29,7 @@ async function main() {
   mainLedStrip.connect()
   console.log('Connected to main strip')  
   
-  await getLightToggleStatus(async isOn => {
+  getLightToggleStatus(async isOn => {
     console.log(`On: ${isOn}`)
     await irLedStrip.toggleLight(isOn)
     await mainLedStrip.toggleLight(isOn)

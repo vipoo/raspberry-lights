@@ -1,17 +1,19 @@
 import Ws2812 from './ws2812'
 
-const count = 35 //160-11
+const count = 32 + 33 //160-11
 let strip = null 
 
-function on(x) {
+function on(r, g, b) {
+  console.log('turning on')
   for (let i = 0; i < count; i++) {
-    strip.array[i] = rgb(x, x, x)
+    strip.array[i] = rgb(r, g, b)
   }
 
   strip.render()
 }
 
 function off() {
+  console.log('turning off stip')
   for (let i = 0; i < count; i++) {
     strip.array[i] = rgb(0, 0, 0)
   }
@@ -25,7 +27,7 @@ export function connect() {
 
 export function toggleLight(isOn) {
   if(isOn)
-  	on(250)
+  	on(64, 255, 200)
   else
   	off()
 }
