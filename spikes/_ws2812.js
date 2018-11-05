@@ -1,10 +1,10 @@
-const bindings = require('rpi-ws281x-native/lib/get-native-bindings')();
-const {stripType, stripTypeIds, paramCodes} = require('rpi-ws281x-native/lib/constants');
+const bindings = require('rpi-ws281x-native/lib/get-native-bindings')()
+const {stripType, stripTypeIds, paramCodes} = require('rpi-ws281x-native/lib/constants')
 
-const MAX_CHANNELS = 2;
-const DEFAULT_DMA = 5;
-const DEFAULT_FREQ = 800000;
-const DEFAULT_STRIP_TYPE = stripType.WS2812;
+const MAX_CHANNELS = 2
+const DEFAULT_DMA = 5
+const DEFAULT_FREQ = 800000
+const DEFAULT_STRIP_TYPE = stripType.WS2812
 
 // for GPIO-numbers see for example https://pinout.xyz/
 const CHANNEL_DEFAULTS = [
@@ -22,15 +22,15 @@ const CHANNEL_DEFAULTS = [
     brightness: 255,
     stripType: DEFAULT_STRIP_TYPE
   }
-];
-const channels = Array(2);
+]
+const channels = Array(2)
 
 // private members for channel-instances
-const _id = Symbol('_id');
-const _params = Symbol('_params');
-const _update = Symbol('_update');
-const _init = Symbol('_init');
-const _reset = Symbol('_reset');
+const _id = Symbol('_id')
+const _params = Symbol('_params')
+const _update = Symbol('_update')
+const _init = Symbol('_init')
+const _reset = Symbol('_reset')
 
 class Channel {
   /**
@@ -38,11 +38,11 @@ class Channel {
    * @param {ChannelParams} params
    */
   constructor(channelId, params) {
-    const ledCount = params.count;
+    const ledCount = params.count
 
     // private properties
-    this[_id] = channelId;
-    this[_params] = params;
+    this[_id] = channelId
+    this[_params] = params
 
     // public/readonly properties
     Object.defineProperties(this, {
@@ -70,19 +70,19 @@ class Channel {
         enumerable: true,
         configurable: false
       }
-    });
+    })
 
     // public properties
-    this.brightness = params.brightness;
-    this.buffer = null;
-    this.array = null;
+    this.brightness = params.brightness
+    this.buffer = null
+    this.array = null
 
     if (ledCount > 0) {
-      const arrayBuffer = new ArrayBuffer(ledCount * 4); // 0xWWRRGGBB
+      const arrayBuffer = new ArrayBuffer(ledCount * 4) // 0xWWRRGGBB
 
       // buffer and array are different ways to access the same data
-      this.buffer = Buffer.from(arrayBuffer);
-      this.array = new Uint32Array(arrayBuffer);
+      this.buffer = Buffer.from(arrayBuffer)
+      this.array = new Uint32Array(arrayBuffer)
     }
   }
 
@@ -91,10 +91,10 @@ class Channel {
    */
   [_reset]() {
     if (!this.array) {
-      return;
+      return
     }
 
-    this.array.fill(0);
+    this.array.fill(0)
   }
 
   /**
@@ -103,11 +103,11 @@ class Channel {
    */
   [_init]() {
     Object.keys(this[_params]).forEach(paramName => {
-      const value = this[_params][paramName];
-      const code = paramCodes[paramName];
+      const value = this[_params][paramName]
+      const code = paramCodes[paramName]
 
-      bindings.setChannelParam(this[_id], code, value);
-    });
+      bindings.setChannelParam(this[_id], code, value)
+    })
   }
 
   /**
@@ -117,11 +117,11 @@ class Channel {
    */
   [_update]() {
     if (this.buffer === null) {
-      return;
+      return
     }
 
-    bindings.setChannelParam(this[_id], paramCodes.brightness, this.brightness);
-    bindings.setChannelData(this[_id], this.buffer);
+    bindings.setChannelParam(this[_id], paramCodes.brightness, this.brightness)
+    bindings.setChannelData(this[_id], this.buffer)
   }
 }
 
@@ -136,46 +136,46 @@ function init(params) {
     dma = DEFAULT_DMA,
     freq = DEFAULT_FREQ,
     channels: channelsConfig = []
-  } = params;
+  } = params
 
   // send global parameter values
-  bindings.setParam(paramCodes.dma, dma);
-  bindings.setParam(paramCodes.freq, freq);
+  bindings.setParam(paramCodes.dma, dma)
+  bindings.setParam(paramCodes.freq, freq)
 
   // setup channels
   for (let channelId = 0; channelId < MAX_CHANNELS; channelId++) {
-    const userParams = channelsConfig[channelId];
-    const defaults = CHANNEL_DEFAULTS[channelId];
+    const userParams = channelsConfig[channelId]
+    const defaults = CHANNEL_DEFAULTS[channelId]
 
-    const params = Object.assign({}, defaults, userParams);
+    const params = Object.assign({}, defaults, userParams)
 
     if (typeof params.stripType === 'string') {
-      params.stripType = stripTypeIds[params.stripType];
+      params.stripType = stripTypeIds[params.stripType]
     }
 
-    channels[channelId] = new Channel(channelId, params);
+    channels[channelId] = new Channel(channelId, params)
   }
 
-  channels.forEach(channel => channel[_init]());
-  bindings.init();
+  channels.forEach(channel => channel[_init]())
+  bindings.init()
 
-  return channels;
+  return channels
 }
 
 /**
  * Submits the current state of the channel-buffers to the driver for rendering.
  */
 function render() {
-  channels.forEach(channel => channel[_update]());
-  bindings.render();
+  channels.forEach(channel => channel[_update]())
+  bindings.render()
 }
 
 /**
  * resets all color-values of all channels and renders.
  */
 function reset() {
-  channels.forEach(channel => channel[_reset]());
-  render();
+  channels.forEach(channel => channel[_reset]())
+  render()
 }
 
 /**
@@ -183,7 +183,7 @@ function reset() {
  * This should always be called when terminating the program.
  */
 function finalize() {
-  bindings.finalize();
+  bindings.finalize()
 }
 
 /**
@@ -200,17 +200,17 @@ module.exports = function(numLeds, options = {}) {
     invert = false,
     brightness = 255,
     stripType = stripType.WS2812
-  } = options;
+  } = options
 
-  const channelOptions = {count: numLeds, gpio, invert, brightness, stripType};
-  const [channel] = init({dma, freq, channels: [channelOptions]});
+  const channelOptions = {count: numLeds, gpio, invert, brightness, stripType}
+  const [channel] = init({dma, freq, channels: [channelOptions]})
 
   // for convenience, make methods available via the channel-instance
-  channel.render = render;
-  channel.finalize = finalize;
+  channel.render = render
+  channel.finalize = finalize
 
-  return channel;
-};
+  return channel
+}
 
 Object.assign(module.exports, {
   init,
@@ -218,7 +218,7 @@ Object.assign(module.exports, {
   reset,
   finalize,
   stripType
-});
+})
 
 /**
  * @typedef {object} FullParams

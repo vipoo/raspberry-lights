@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "Controller for my led strips",
   "main": "index.mjs",
+  "watch": {
+    "lint": "**/*"
+  },
   "scripts": {
-    "test": "test",
-    "start": "node --experimental-modules index.mjs",
+    "postinstall": "ln -fnrs lib/ node_modules/lib && ln -fnrs app/ node_modules/app",
+    "watch": "npm-watch",
+    "lint": "eslint . --ext .js --ext .mjs --fix",
+    "start": "DEBUG=RLC:* node --experimental-modules index.mjs",
     "pi:init": "PI_HOST=$npm_package_config_PI_HOST ./scripts/remote-install-lirc.sh",
     "pi:upload": "PI_HOST=$npm_package_config_PI_HOST ./scripts/upload.sh main-app-service",
     "pi:upload:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/upload.sh work",
@@ -20,9 +25,19 @@
   "author": "Dean Netherton",
   "license": "ISC",
   "dependencies": {
+    "debug": "^4.1.0",
     "huejay": "^1.8.4",
     "lirc-client": "^2.0.0",
     "lirc_node": "0.0.4",
-    "rpi-ws281x-native": "github:vipoo/node-rpi-ws281x-native#v1.x"
+    "rpi-ws281x-native": "github:vipoo/node-rpi-ws281x-native#v1.x",
+    "ws": "^6.1.0",
+    "ws-reconnect": "^1.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.8.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-config-google": "^0.11.0",
+    "eslint-plugin-node": "^7.0.1",
+    "npm-watch": "^0.4.0"
   }
 }
