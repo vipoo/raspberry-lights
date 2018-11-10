@@ -18,7 +18,7 @@ async function getLightToggleStatus(cb) {
       log(err.message)
       await delay(2000)
     }
-    await delay(20)
+    await delay(500)
   }
 }
 
