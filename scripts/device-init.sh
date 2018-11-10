@@ -26,3 +26,5 @@ ssh $PI "sudo grep -q -F 'lirc-rpi' /boot/config.txt || echo \"dtoverlay=lirc-rp
 ssh $PI "rm -rf ~/tmp"
 
 ssh $PI 'mkdir -p ~/main-app-service'
+
+sudo systemctl stop main-app.service
