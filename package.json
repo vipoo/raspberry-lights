@@ -11,7 +11,7 @@
     "watch": "npm-watch",
     "lint": "eslint . --ext .js --ext .mjs --fix",
     "start": "DEBUG=RLC:* node --experimental-modules index.mjs",
-    "pi:init": "PI_HOST=$npm_package_config_PI_HOST ./scripts/remote-install-lirc.sh",
+    "pi:init": "PI_HOST=$npm_package_config_PI_HOST ./scripts/device-init.sh",
     "pi:upload": "PI_HOST=$npm_package_config_PI_HOST ./scripts/upload.sh main-app-service",
     "pi:upload:work": "PI_HOST=$npm_package_config_PI_HOST ./scripts/upload.sh work",
     "pi:install": "PI_HOST=$npm_package_config_PI_HOST ./scripts/install.sh main-app-service",
@@ -24,19 +24,13 @@
     "pi:set:read:only": "PI_HOST=$npm_package_config_PI_HOST ./scripts/device-set-read-only.sh"
   },
   "config": {
-    "PI_HOST": "192.168.86.59"
+    "PI_HOST": "192.168.86.77"
   },
   "author": "Dean Netherton",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
     "debug": "^4.1.0",
-    "huejay": "^1.8.4",
-    "lirc-client": "^2.0.0",
-    "lirc_node": "0.0.4",
-    "rpi-ws281x-native": "github:vipoo/node-rpi-ws281x-native#v1.x",
-    "ws": "^6.1.0",
-    "ws-reconnect": "^1.0.5"
+    "rpi-ws281x-native": "github:vipoo/node-rpi-ws281x-native#v1.x"
   },
   "devDependencies": {
     "eslint": "^5.8.0",
